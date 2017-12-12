@@ -1,7 +1,7 @@
 // preview[view:south east, tilt:top diagonal]
 
 /* [Basic Settings] */
-case_type = "arduino"; // [arduino:Arduino Uno,custom:Custom]
+case_type = "custom"; // [arduino:Arduino Uno,custom:Custom]
 feet = "none"; // [raised:Raised,mag:Magnetic,hole:Holes,wing:Wings,none:None]
 attachment_type = "nothread"; // [hotinsert:Hot Insert,nothread:Undersized Hole]
 rib_type = "outer"; // [inner:Inner,outer:Outer,none:None]
@@ -19,7 +19,7 @@ top_cap = "include"; // [include:Include,exclude:Exclude]
 // Include the two end caps
 end_caps = "include"; // [include:Include,exclude:Exclude]
 // Include vents in the top of the case (if available)
-vents = "include"; // [include:Include,exclude:Exclude]
+vents = "exclude"; // [include:Include,exclude:Exclude]
 
 /* [Custom PCB Dimensions] */
 // PCB width in mm
