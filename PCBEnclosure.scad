@@ -1,7 +1,7 @@
 // preview[view:south east, tilt:top diagonal]
 
 /* [Basic Settings] */
-case_type = "custom"; // [arduino:Arduino Uno,custom:Custom]
+case_type = "arduino"; // [arduino:Arduino Uno,custom:Custom]
 feet = "none"; // [raised:Raised,mag:Magnetic,hole:Holes,wing:Wings,none:None]
 attachment_type = "nothread"; // [hotinsert:Hot Insert,nothread:Undersized Hole]
 rib_type = "outer"; // [inner:Inner,outer:Outer,none:None]
@@ -233,8 +233,8 @@ union() {
     }  
     
     if (vents == "include") {
-      for (a =[0:5]) {
-        translate([-(width/3)+wall*2+(a*7),10,height/3])
+      for (a =[0:4]) {
+        translate([-(width/5)+(a*(width/11)),10,height/3])
         cube([2,10,length*.66]);
       }
     }      
