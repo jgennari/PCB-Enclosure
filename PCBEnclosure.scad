@@ -19,7 +19,7 @@ top_cap = "include"; // [include:Include,exclude:Exclude]
 // Include the two end caps
 end_caps = "include"; // [include:Include,exclude:Exclude]
 // Include vents in the top of the case (if available)
-vents = "exclude"; // [include:Include,exclude:Exclude]
+vents = "include"; // [include:Include,exclude:Exclude]
 
 /* [Custom PCB Dimensions] */
 // PCB width in mm
@@ -234,8 +234,8 @@ union() {
     
     if (vents == "include") {
       for (a =[0:5]) {
-        translate([-(height/2)+wall+(a*7),10,height/3])
-        cube([2,25,length*.66]);
+        translate([-(width/3)+wall*2+(a*7),10,height/3])
+        cube([2,10,length*.66]);
       }
     }      
   }
