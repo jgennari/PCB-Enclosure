@@ -7,6 +7,7 @@ This case is inspired by the generic extrusion cases you can find at any supplie
   - Raised feet
   - Raised feet with magnet recess
   - Holes
+  - Wings with holes
 * Custom board sizes
   - Width/Length of board
   - Height of components on board
