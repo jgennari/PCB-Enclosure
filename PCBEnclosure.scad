@@ -2,8 +2,8 @@
 
 /* [Basic Settings] */
 case_type = "arduino"; // [arduino:Arduino Uno,custom:Custom]
-feet = "wing"; // [raised:Raised,mag:Magnetic,hole:Holes,wing:Wings,none:None]
-attachment_type = "hotinsert"; // [hotinsert:Hot Insert,nothread:Undersized Hole]
+feet = "mag"; // [raised:Raised,mag:Magnetic,hole:Holes,wing:Wings,none:None]
+attachment_type = "nothread"; // [hotinsert:Hot Insert,nothread:Undersized Hole]
 bolt_size = 2.5; // [2.5:2.5mm,3:3mm,4:4mm]
 
 /* [Case Options] */
@@ -18,9 +18,9 @@ top_cap = "include"; // [include:Include,exclude:Exclude]
 // Include the two end caps
 end_caps = "include"; // [include:Include,exclude:Exclude]
 // Include vents in the top of the case (if available)
-vents = "include"; // [include:Include,exclude:Exclude]
+vents = "exclude"; // [include:Include,exclude:Exclude]
 // Include ribs on the side of the case
-rib_type = "none"; // [inner:Inner,outer:Outer,none:None]
+rib_type = "outer"; // [inner:Inner,outer:Outer,none:None]
 
 /* [Custom PCB Dimensions] */
 // PCB width in mm
@@ -51,7 +51,7 @@ height = custom_height;
 length = custom_length;
 width = case_type == "arduino" ? 53.50 : custom_width;
 height = case_type == "arduino" ? 30 : custom_height;
-length = case_type == "arduino" ? 68.7 : custom_length;
+length = case_type == "arduino" ? 68.9 : custom_length;
 
 color("orange")
 union() {
@@ -167,11 +167,11 @@ union() {
     
     // Drill the holes for the attachment points, size depends on type
     if (attachment_type == "hotinsert")   
-      drill_holes(hole+hot_insert_clearance);  
+      drill_holes(hole+hot_insert_clearance, length+(wall*3));  
     else if (attachment_type == "undersize") 
-      drill_holes(hole*hole_shrink);  
+      drill_holes(hole*hole_shrink, length+(wall*3));  
     else
-      drill_holes(hole);
+      drill_holes(hole, length+(wall*3));
     
     // Carve out the inner ribs
     if (rib_type == "inner")
@@ -257,7 +257,7 @@ if (end_caps == "include") {
           square([width,height], center = true);
       }
     }
-    drill_holes(hole*through_factor);
+    drill_holes(hole*through_factor, length+(wall*3));
     if (case_type == "arduino") {
       translate([width/2-5.5-9.8,-(height/2-fillet-2)+2.5,0])
         cube(size = [13,11,10], center = true);
@@ -274,7 +274,7 @@ if (end_caps == "include") {
           square([width,height], center = true);
       }
     }
-    drill_holes(hole*through_factor);
+    drill_holes(hole*through_factor, length+(wall*3));
   }
 }
 
@@ -299,25 +299,25 @@ module make_ribs() {
   }
 }
 
-module drill_holes(drill_size) {    
+module drill_holes(drill_size, drill_length) {    
   echo(drill_size);
   translate([0,0,-wall]) {
-    linear_extrude(length+(wall*3)) {
+    linear_extrude(drill_length) {
       translate([-(width/2)+fillet/4,(height/2)-fillet/4,0])
       circle(drill_size, $fn = 20);
     }
     
-    linear_extrude(length+(wall*3)) {
+    linear_extrude(drill_length) {
       translate([(width/2)-fillet/4,(height/2)-fillet/4,0])
       circle(drill_size, $fn = 20);
     }
     
-    linear_extrude(length+(wall*3)) {
+    linear_extrude(drill_length) {
       translate([(width/2)-fillet/4,-(height/2)+fillet/4,0])
       circle(drill_size, $fn = 20);
     }
     
-    linear_extrude(length+(wall*3)) {
+    linear_extrude(drill_length) {
       translate([-(width/2)+fillet/4,-(height/2)+fillet/4,0])
       circle(drill_size, $fn = 20);
     }
