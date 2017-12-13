@@ -2,8 +2,8 @@
 
 /* [Basic Settings] */
 case_type = "arduino"; // [arduino:Arduino Uno,custom:Custom]
-feet = "none"; // [raised:Raised,mag:Magnetic,hole:Holes,wing:Wings,none:None]
-attachment_type = "nothread"; // [hotinsert:Hot Insert,nothread:Undersized Hole]
+feet = "wing"; // [raised:Raised,mag:Magnetic,hole:Holes,wing:Wings,none:None]
+attachment_type = "hotinsert"; // [hotinsert:Hot Insert,nothread:Undersized Hole]
 bolt_size = 2.5; // [2.5:2.5mm,3:3mm,4:4mm]
 
 /* [Case Options] */
@@ -16,9 +16,9 @@ middle_board_cutout = "exclude"; // [include:Include,exclude:Exclude]
 // Include the top of the case
 top_cap = "include"; // [include:Include,exclude:Exclude]
 // Include the two end caps
-end_caps = "exclude"; // [include:Include,exclude:Exclude]
+end_caps = "include"; // [include:Include,exclude:Exclude]
 // Include vents in the top of the case (if available)
-vents = "exclude"; // [include:Include,exclude:Exclude]
+vents = "include"; // [include:Include,exclude:Exclude]
 // Include ribs on the side of the case
 rib_type = "none"; // [inner:Inner,outer:Outer,none:None]
 
@@ -41,6 +41,7 @@ hole_shrink = 0.85;
 pcb_clearance = 0.15; // The clearance amount for the PCB in mm
 // Clearance in mm around hot insert holes
 hot_insert_clearance = 0.25; // The clearance amount for hot inserts in mm
+through_factor = 1.05; // Factor to enlarge holes for bolts
 
 /* [Hidden] */
 hole = bolt_size/2;
@@ -112,20 +113,20 @@ union() {
         cube(size = [8,wall,length]);
         translate([4,0,10])
           rotate([90,90,0])
-          cylinder(200,hole,hole,true,$fn=20);
+          cylinder(15,hole*through_factor,hole*through_factor,true,$fn=20);
         translate([4,0,length-10])
           rotate([90,90,0])
-          cylinder(200,hole,hole,true,$fn=20);
+          cylinder(15,hole*through_factor,hole*through_factor,true,$fn=20);
       }
     translate([-(width/2)-8,-height/2-wall/2,0])
       difference() {
         cube(size = [8,wall,length]);
         translate([4,0,10])
           rotate([90,90,0])
-          cylinder(200,hole,hole,true,$fn=20);
+          cylinder(15,hole*through_factor,hole*through_factor,true,$fn=20);
         translate([4,0,length-10])
           rotate([90,90,0])
-          cylinder(200,hole,hole,true,$fn=20);
+          cylinder(15,hole*through_factor,hole*through_factor,true,$fn=20);
       }
   }
 
@@ -256,12 +257,12 @@ if (end_caps == "include") {
           square([width,height], center = true);
       }
     }
-    drill_holes(hole);
+    drill_holes(hole*through_factor);
     if (case_type == "arduino") {
-      translate([width/2-5.5-9.8,-(height/2-fillet-2)+5.5,0])
-        cube(size = [12.5,11,10], center = true);
+      translate([width/2-5.5-9.8,-(height/2-fillet-2)+2.5,0])
+        cube(size = [13,11,10], center = true);
       translate([-width/2+4.5+3.3,-(height/2-fillet-2)+5.5,0])
-        cube(size = [9,11,10], center = true);
+        cube(size = [9.5,11,10], center = true);
     }
   }
   
@@ -273,7 +274,7 @@ if (end_caps == "include") {
           square([width,height], center = true);
       }
     }
-    drill_holes(hole);
+    drill_holes(hole*through_factor);
   }
 }
 
@@ -301,20 +302,22 @@ module make_ribs() {
 module drill_holes(drill_size) {    
   echo(drill_size);
   translate([0,0,-wall]) {
-    linear_extrude(length+wall*2) {
+    linear_extrude(length+(wall*3)) {
       translate([-(width/2)+fillet/4,(height/2)-fillet/4,0])
       circle(drill_size, $fn = 20);
     }
     
-    linear_extrude(length+wall*2) {
+    linear_extrude(length+(wall*3)) {
       translate([(width/2)-fillet/4,(height/2)-fillet/4,0])
       circle(drill_size, $fn = 20);
     }
-    linear_extrude(length+wall*2) {
+    
+    linear_extrude(length+(wall*3)) {
       translate([(width/2)-fillet/4,-(height/2)+fillet/4,0])
       circle(drill_size, $fn = 20);
     }
-    linear_extrude(length+wall*2) {
+    
+    linear_extrude(length+(wall*3)) {
       translate([-(width/2)+fillet/4,-(height/2)+fillet/4,0])
       circle(drill_size, $fn = 20);
     }
