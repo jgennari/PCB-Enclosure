@@ -1,10 +1,9 @@
 // preview[view:south east, tilt:top diagonal]
 
 /* [Basic Settings] */
-case_type = "custom"; // [arduino:Arduino Uno,custom:Custom]
+case_type = "arduino"; // [arduino:Arduino Uno,custom:Custom]
 feet = "none"; // [raised:Raised,mag:Magnetic,hole:Holes,wing:Wings,none:None]
 attachment_type = "nothread"; // [hotinsert:Hot Insert,nothread:Undersized Hole]
-rib_type = "outer"; // [inner:Inner,outer:Outer,none:None]
 bolt_size = 2.5; // [2.5:2.5mm,3:3mm,4:4mm]
 
 /* [Case Options] */
@@ -17,9 +16,11 @@ middle_board_cutout = "exclude"; // [include:Include,exclude:Exclude]
 // Include the top of the case
 top_cap = "include"; // [include:Include,exclude:Exclude]
 // Include the two end caps
-end_caps = "include"; // [include:Include,exclude:Exclude]
+end_caps = "exclude"; // [include:Include,exclude:Exclude]
 // Include vents in the top of the case (if available)
 vents = "exclude"; // [include:Include,exclude:Exclude]
+// Include ribs on the side of the case
+rib_type = "none"; // [inner:Inner,outer:Outer,none:None]
 
 /* [Custom PCB Dimensions] */
 // PCB width in mm
@@ -33,11 +34,11 @@ pcb_height = 1.6; // Height of all PCB's in mm
 
 /* [Print Details] */
 // Wall thickness in mm
-wall = 1.5; 
+wall = 1.7; 
 // Percent of shrink in non-threaded holes
 hole_shrink = 0.85; 
 // Clearance in mm around X, Y and Z of PCB cutouts
-pcb_clearance = 0.3; // The clearance amount for the PCB in mm
+pcb_clearance = 0.15; // The clearance amount for the PCB in mm
 // Clearance in mm around hot insert holes
 hot_insert_clearance = 0.25; // The clearance amount for hot inserts in mm
 
