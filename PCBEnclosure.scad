@@ -51,7 +51,7 @@ height = custom_height;
 length = custom_length;
 width = case_type == "arduino" ? 53.50 : custom_width;
 height = case_type == "arduino" ? 30 : custom_height;
-length = case_type == "arduino" ? 68.7 : custom_length;
+length = case_type == "arduino" ? 68.8 : custom_length;
 
 color("orange")
 union() {
@@ -267,7 +267,7 @@ union() {
 
 color("gray")
 if (end_caps == "include") {
-  translate([0,height*2.50,wall])
+  //translate([0,height*2.50,wall])
   difference() {
     translate([0,0,-wall])
     linear_extrude(wall) {
@@ -277,7 +277,7 @@ if (end_caps == "include") {
     }
     drill_holes(hole*through_factor);
     if (case_type == "arduino") {
-      translate([width/2-5.5-9.8,-(height/2-fillet-2)+2.5,0])
+      translate([width/2-5.5-9.8,-(height/2-fillet-2)+5.5,0])
         cube(size = [13,11,10], center = true);
       translate([-width/2+4.5+3.3,-(height/2-fillet-2)+5.5,0])
         cube(size = [9.5,11,10], center = true);
