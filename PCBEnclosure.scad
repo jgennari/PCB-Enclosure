@@ -2,8 +2,8 @@
 
 /* [Basic Settings] */
 case_type = "arduino"; // [arduino:Arduino Uno,custom:Custom]
-feet = "wing"; // [raised:Raised,mag:Magnetic,hole:Holes,wing:Wings,none:None]
-attachment_type = "hotinsert"; // [hotinsert:Hot Insert,nothread:Undersized Hole]
+feet = "mag"; // [raised:Raised,mag:Magnetic,hole:Holes,wing:Wings,none:None]
+attachment_type = "nothread"; // [hotinsert:Hot Insert,nothread:Undersized Hole]
 bolt_size = 2.5; // [2.5:2.5mm,3:3mm,4:4mm]
 
 /* [Case Options] */
@@ -14,13 +14,13 @@ top_board_cutout = "exclude"; // [include:Include,exclude:Exclude]
 // Add an extra slot for a PCB at mid-height
 middle_board_cutout = "exclude"; // [include:Include,exclude:Exclude]
 // Include the top of the case
-top_cap = "include"; // [include:Include,exclude:Exclude]
+top_cap = "exclude"; // [include:Include,exclude:Exclude]
 // Include the two end caps
 end_caps = "include"; // [include:Include,exclude:Exclude]
 // Include vents in the top of the case (if available)
-vents = "include"; // [include:Include,exclude:Exclude]
+vents = "exclude"; // [include:Include,exclude:Exclude]
 // Include ribs on the side of the case
-rib_type = "none"; // [inner:Inner,outer:Outer,none:None]
+rib_type = "outer"; // [inner:Inner,outer:Outer,none:None]
 
 /* [Custom PCB Dimensions] */
 // PCB width in mm
@@ -45,7 +45,7 @@ through_factor = 1.05; // Factor to enlarge holes for bolts
 
 /* [Hidden] */
 hole = bolt_size/2;
-fillet = hole * (attachment_type == "hotinsert" ? 4.5 : 4.5);
+fillet = hole * (attachment_type == "hotinsert" ? 5 : 4.5);
 width = custom_width;
 height = custom_height;
 length = custom_length;
@@ -211,11 +211,29 @@ union() {
     if (top_cap == "exclude") {
       translate([0,(height/2)+(wall/2)+1,length/2]) {
         rotate([90,0,0]) {
-          linear_extrude(wall+2) {  
-            square([width-(fillet+(wall/2)*2),length], center=true);
+          linear_extrude(wall*2) {  
+            square([width-(fillet*2.5),length], center=true);
           }
         }
       }
+      
+            
+      rotate([90,0,180]) 
+        translate([(width/2)-fillet+1,length-3,(height/2)-0])
+        cylinder(10,hole*hole_shrink,hole*hole_shrink,true, $fn = 20, $fn = 20);
+      
+      rotate([90,0,180]) 
+        translate([(width/2)-fillet+1,3,(height/2)-0])
+        cylinder(10,hole*hole_shrink,hole*hole_shrink,true, $fn = 20, $fn = 20);
+      
+      rotate([90,0,180]) 
+        translate([-(width/2)+fillet-1,length-3,(height/2)-0])
+        cylinder(10,hole*hole_shrink,hole*hole_shrink,true, $fn = 20, $fn = 20);
+      
+      rotate([90,0,180]) 
+        translate([-(width/2)+fillet-1,3,(height/2)-0])
+        cylinder(10,hole*hole_shrink,hole*hole_shrink,true, $fn = 20, $fn = 20);
+      
     }    
     
     // Make holes feet if selected
@@ -275,6 +293,36 @@ if (end_caps == "include") {
       }
     }
     drill_holes(hole*through_factor);
+  }
+}
+
+if (top_cap == "exclude") {
+  translate([0,height*5.5,-height/2-wall/2])
+  rotate([90,0,0])
+  difference() {
+      translate([0,(height/2)+(wall)+1,length/2]) {
+        rotate([90,0,0]) {
+          linear_extrude(wall) {  
+            square([width-2,length], center=true);
+          }
+        }
+      }
+            
+      rotate([90,0,180]) 
+        translate([(width/2)-fillet+1,length-3,(height/2)-0])
+        cylinder(10,hole,hole*hole_shrink,true, $fn = 20, $fn = 20);
+      
+      rotate([90,0,180]) 
+        translate([(width/2)-fillet+1,3,(height/2)-0])
+        cylinder(10,hole,hole,true, $fn = 20, $fn = 20);
+      
+      rotate([90,0,180]) 
+        translate([-(width/2)+fillet-1,length-3,(height/2)-0])
+        cylinder(10,hole,hole,true, $fn = 20, $fn = 20);
+      
+      rotate([90,0,180]) 
+        translate([-(width/2)+fillet-1,3,(height/2)-0])
+        cylinder(10,hole,hole,true, $fn = 20, $fn = 20);
   }
 }
 
